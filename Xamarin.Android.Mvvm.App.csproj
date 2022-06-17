@@ -83,6 +83,7 @@
     <Compile Include="Repository\WebService\IApi.cs" />
     <Compile Include="Repository\WebService\IMobileService.cs" />
     <Compile Include="Repository\WebService\MobileService.cs" />
+    <Compile Include="Utils\ObjectTypeHelper.cs" />
     <Compile Include="ViewModels\AndroidBaseViewModel.cs" />
     <Compile Include="ViewModels\MainActivityViewModel.cs" />
     <Compile Include="Views\MainActivity.cs" />
