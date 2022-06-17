@@ -24,6 +24,7 @@ namespace Xamarin.Android.Mvvm.App.Adapters
         public void SetData(JavaList<User> users)
         {
             _usersList = users;
+            NotifyDataSetChanged();
         }
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
@@ -65,13 +66,13 @@ namespace Xamarin.Android.Mvvm.App.Adapters
 
             public void OnClick(View v)
             {
-                _itemsAdapter.ItemClickListener?.OnItemClicked(v, AbsoluteAdapterPosition);
+                _itemsAdapter.ItemClickListener?.ListItemOnClick(v, AbsoluteAdapterPosition);
             }
         }
 
         public interface IItemClickListener
         {
-            void OnItemClicked(View view, int position);
+            void ListItemOnClick(View view, int position);
         }
     }
 }

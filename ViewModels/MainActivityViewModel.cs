@@ -1,12 +1,8 @@
-﻿using Android.OS;
-using AndroidX.Lifecycle;
-using System.Collections.ObjectModel;
+﻿using AndroidX.Lifecycle;
 using System.Threading.Tasks;
 using Xamarin.Android.Mvvm.App.Models;
 using Xamarin.Android.Mvvm.App.Repository;
-using Java.Lang;
 using Android.Runtime;
-using System.Collections.Generic;
 
 namespace Xamarin.Android.Mvvm.App.ViewModels
 {
@@ -20,7 +16,6 @@ namespace Xamarin.Android.Mvvm.App.ViewModels
         {
             _repository = new WebRepository();
             data = new MutableLiveData();
-            data.SetValue(new JavaList<User>());
         }
 
         public LiveData GetLiveData()

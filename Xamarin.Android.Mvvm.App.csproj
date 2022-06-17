@@ -86,6 +86,7 @@
     <Compile Include="Utils\ObjectTypeHelper.cs" />
     <Compile Include="ViewModels\AndroidBaseViewModel.cs" />
     <Compile Include="ViewModels\MainActivityViewModel.cs" />
+    <Compile Include="Views\ListObserver.cs" />
     <Compile Include="Views\MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

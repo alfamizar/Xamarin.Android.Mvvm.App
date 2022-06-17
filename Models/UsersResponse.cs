@@ -10,7 +10,6 @@ namespace Xamarin.Android.Mvvm.App.Models
         public IList<User> Users { get; set; }
         public Info Info { get; set; }
     }
-
     
     public class User
     {

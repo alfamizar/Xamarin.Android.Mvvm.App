@@ -12,14 +12,13 @@ using Google.Android.Material.ProgressIndicator;
 using static Xamarin.Android.Mvvm.App.Adapters.UsersAdapter;
 using Xamarin.Android.Mvvm.App.Adapters;
 using Xamarin.Android.Mvvm.App.ViewModels;
-using Xamarin.Android.Mvvm.App.Models;
 using Java.Lang;
-using Android.Runtime;
+using Xamarin.Android.Mvvm.App.Views;
 
 namespace Xamarin.Android.Mvvm.App
 {
     [Activity(Theme = "@style/Theme.MyApplication.NoActionBar", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
-    public class MainActivity : AppCompatActivity, IItemClickListener, IObserver
+    public class MainActivity : AppCompatActivity, IItemClickListener
     {
         private UsersAdapter _itemsAdapter;
         private RecyclerView _recyclerView;
@@ -37,10 +36,10 @@ namespace Xamarin.Android.Mvvm.App
                 .Get(Class.FromType(typeof(MainActivityUsersViewModel))) as MainActivityUsersViewModel;
 
             _viewModel.PropertyChanged += UsersViewModelPropertyChanged;
-
-            _viewModel.GetLiveData().Observe(this, this);
-
+           
             InitViews();
+
+            _viewModel.GetLiveData().Observe(this, new ListObserver(_itemsAdapter.SetData));
         }
 
         private void InitViews()
@@ -62,7 +61,6 @@ namespace Xamarin.Android.Mvvm.App
         private void InitRecycler()
         {
             _itemsAdapter = new UsersAdapter(this);
-            _itemsAdapter.SetData((JavaList<User>)_viewModel.GetLiveData().Value);
             _recyclerView = FindViewById<RecyclerView>(Resource.Id.UsersRecyclerView);
             _recyclerView.SetLayoutManager(new LinearLayoutManager(this));
             _recyclerView.SetAdapter(_itemsAdapter);
@@ -91,37 +89,12 @@ namespace Xamarin.Android.Mvvm.App
 
         private void ChangeProgressBarVisibility(ViewStates viewState)
         {
-            new Handler(MainLooper).Post(() =>
-            {
-                _isBusyProgressBar.Visibility = viewState;
-            });
+            _isBusyProgressBar.Visibility = viewState;
         }
 
-        public void OnItemClicked(global::Android.Views.View view, int position)
+        public void ListItemOnClick(global::Android.Views.View view, int position)
         {
             Debug.WriteLine($"Position {position} clicked");
-        }
-
-        public void OnChanged(Object p0)
-        {
-            _itemsAdapter.NotifyDataSetChanged();
-            Debug.WriteLine("Users Changed!");
-        }
-    }
-
-    public static class ObjectTypeHelper
-    {
-        public static T Cast<T>(this Java.Lang.Object obj) where T : class
-        {
-            if ((obj == null)) return null;
-            var propertyInfo = obj.GetType().GetProperty("Instance");
-            return propertyInfo == null ? null : propertyInfo.GetValue(obj, null) as T;
-        }
-
-        public static Object ReverseCast<T>(T obj) where T : class
-        {
-            var propertyInfo = obj.GetType().GetProperty("Instance");
-            return propertyInfo == null ? null : propertyInfo.GetValue(obj, null) as Object;
         }
     }
 }
