@@ -1,19 +1,31 @@
-﻿using System.Collections.ObjectModel;
+﻿using Android.OS;
+using AndroidX.Lifecycle;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Xamarin.Android.Mvvm.App.Models;
 using Xamarin.Android.Mvvm.App.Repository;
+using Java.Lang;
+using Android.Runtime;
+using System.Collections.Generic;
 
 namespace Xamarin.Android.Mvvm.App.ViewModels
 {
     public class MainActivityUsersViewModel : AndroidBaseViewModel
     {
         private readonly IRepository _repository;
-        public ObservableCollection<User> UsersList { get; private set; }
+
+        private MutableLiveData data;
 
         public MainActivityUsersViewModel()
         {
             _repository = new WebRepository();
-            UsersList = new ObservableCollection<User>();
+            data = new MutableLiveData();
+            data.SetValue(new JavaList<User>());
+        }
+
+        public LiveData GetLiveData()
+        {
+            return data;
         }
 
         public async Task OnLoadUsersButtonClicked(string gender, int count)
@@ -24,10 +36,14 @@ namespace Xamarin.Android.Mvvm.App.ViewModels
 
             var users = await _repository.GetUsersList(gender, count);
 
+            JavaList<User> javaUsers = new JavaList<User> ();
+
             foreach (var user in users)
             {
-                UsersList.Add(user);
+                javaUsers.Add(user);
             }
+
+            data.PostValue(javaUsers);
 
             IsBusy = false;
         }

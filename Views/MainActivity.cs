@@ -12,13 +12,14 @@ using Google.Android.Material.ProgressIndicator;
 using static Xamarin.Android.Mvvm.App.Adapters.UsersAdapter;
 using Xamarin.Android.Mvvm.App.Adapters;
 using Xamarin.Android.Mvvm.App.ViewModels;
-using System.Collections.Generic;
 using Xamarin.Android.Mvvm.App.Models;
+using Java.Lang;
+using Android.Runtime;
 
 namespace Xamarin.Android.Mvvm.App
 {
     [Activity(Theme = "@style/Theme.MyApplication.NoActionBar", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
-    public class MainActivity : AppCompatActivity, IItemClickListener
+    public class MainActivity : AppCompatActivity, IItemClickListener, IObserver
     {
         private UsersAdapter _itemsAdapter;
         private RecyclerView _recyclerView;
@@ -33,11 +34,11 @@ namespace Xamarin.Android.Mvvm.App
             SetContentView(Resource.Layout.ActivityMain);
 
             _viewModel = new ViewModelProvider(this)
-                .Get(Java.Lang.Class.FromType(typeof(MainActivityUsersViewModel))) as MainActivityUsersViewModel;
-
-            _viewModel.UsersList.CollectionChanged += UsersViewModelCollectionChanged;
+                .Get(Class.FromType(typeof(MainActivityUsersViewModel))) as MainActivityUsersViewModel;
 
             _viewModel.PropertyChanged += UsersViewModelPropertyChanged;
+
+            _viewModel.GetLiveData().Observe(this, this);
 
             InitViews();
         }
@@ -60,9 +61,8 @@ namespace Xamarin.Android.Mvvm.App
 
         private void InitRecycler()
         {
-            _itemsAdapter = new UsersAdapter();
-            _itemsAdapter.SetOnClickListener(this);
-            _itemsAdapter.UsersList = new List<User>(_viewModel.UsersList);
+            _itemsAdapter = new UsersAdapter(this);
+            _itemsAdapter.SetData((JavaList<User>)_viewModel.GetLiveData().Value);
             _recyclerView = FindViewById<RecyclerView>(Resource.Id.UsersRecyclerView);
             _recyclerView.SetLayoutManager(new LinearLayoutManager(this));
             _recyclerView.SetAdapter(_itemsAdapter);
@@ -80,7 +80,6 @@ namespace Xamarin.Android.Mvvm.App
                     else
                     {
                         ChangeProgressBarVisibility(ViewStates.Invisible);
-                        _recyclerView.SmoothScrollToPosition(_recyclerView.GetAdapter().ItemCount - 1);
                     }
                     Debug.WriteLine("IsBusyChanged");
                     break;
@@ -88,19 +87,6 @@ namespace Xamarin.Android.Mvvm.App
                     Debug.WriteLine("SomePropertyChanged");
                     break;
             }
-        }
-
-        private void UsersViewModelCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            {
-                _itemsAdapter.UsersList.Add(e.NewItems[0] as User);
-            }
-
-            new Handler(MainLooper).Post(() =>
-            {
-                _itemsAdapter.NotifyDataSetChanged();
-            });
         }
 
         private void ChangeProgressBarVisibility(ViewStates viewState)
@@ -114,6 +100,28 @@ namespace Xamarin.Android.Mvvm.App
         public void OnItemClicked(global::Android.Views.View view, int position)
         {
             Debug.WriteLine($"Position {position} clicked");
+        }
+
+        public void OnChanged(Object p0)
+        {
+            _itemsAdapter.NotifyDataSetChanged();
+            Debug.WriteLine("Users Changed!");
+        }
+    }
+
+    public static class ObjectTypeHelper
+    {
+        public static T Cast<T>(this Java.Lang.Object obj) where T : class
+        {
+            if ((obj == null)) return null;
+            var propertyInfo = obj.GetType().GetProperty("Instance");
+            return propertyInfo == null ? null : propertyInfo.GetValue(obj, null) as T;
+        }
+
+        public static Object ReverseCast<T>(T obj) where T : class
+        {
+            var propertyInfo = obj.GetType().GetProperty("Instance");
+            return propertyInfo == null ? null : propertyInfo.GetValue(obj, null) as Object;
         }
     }
 }
