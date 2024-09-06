@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Xamarin.Android.Mvvm.App.ViewModels
+namespace Xamarin.Android.Mvvm.App.Presentation.ViewModels
 {
     public class AndroidBaseViewModel : ViewModel, INotifyPropertyChanged
     {

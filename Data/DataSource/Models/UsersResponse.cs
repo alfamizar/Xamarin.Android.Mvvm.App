@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Xamarin.Android.Mvvm.App.Models
+namespace Xamarin.Android.Mvvm.App.Data.DataSource.Models
 {
     public class UsersResponse
     {

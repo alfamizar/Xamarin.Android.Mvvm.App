@@ -1,16 +1,17 @@
 ﻿using AndroidX.Lifecycle;
 using System.Threading.Tasks;
-using Xamarin.Android.Mvvm.App.Models;
 using Xamarin.Android.Mvvm.App.Repository;
 using Android.Runtime;
+using Xamarin.Android.Mvvm.App.Data.DataSource.Models;
+using Xamarin.Android.Mvvm.App.Repository.WebRepository;
 
-namespace Xamarin.Android.Mvvm.App.ViewModels
+namespace Xamarin.Android.Mvvm.App.Presentation.ViewModels
 {
     public class MainActivityUsersViewModel : AndroidBaseViewModel
     {
         private readonly IRepository _repository;
 
-        private MutableLiveData data;
+        private readonly MutableLiveData data;
 
         public MainActivityUsersViewModel()
         {

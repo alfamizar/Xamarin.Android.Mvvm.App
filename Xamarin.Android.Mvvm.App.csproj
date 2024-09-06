@@ -75,19 +75,19 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapters\ItemsAdapter.cs" />
-    <Compile Include="Constants\Constants.cs" />
-    <Compile Include="Models\UsersResponse.cs" />
+    <Compile Include="Presentation\Adapters\ItemsAdapter.cs" />
+    <Compile Include="Data\DataSource\RemoteDataSource\Constants\Constants.cs" />
+    <Compile Include="Data\DataSource\Models\UsersResponse.cs" />
     <Compile Include="Repository\IRepository.cs" />
-    <Compile Include="Repository\Repository.cs" />
-    <Compile Include="Repository\WebService\IApi.cs" />
-    <Compile Include="Repository\WebService\IMobileService.cs" />
-    <Compile Include="Repository\WebService\MobileService.cs" />
+    <Compile Include="Repository\WebRepository\WebRepository.cs" />
+    <Compile Include="Data\DataSource\RemoteDataSource\IApi.cs" />
+    <Compile Include="Data\DataSource\RemoteDataSource\IMobileService.cs" />
+    <Compile Include="Data\DataSource\RemoteDataSource\MobileService.cs" />
     <Compile Include="Utils\ObjectTypeHelper.cs" />
-    <Compile Include="ViewModels\AndroidBaseViewModel.cs" />
-    <Compile Include="ViewModels\MainActivityViewModel.cs" />
-    <Compile Include="Views\ListObserver.cs" />
-    <Compile Include="Views\MainActivity.cs" />
+    <Compile Include="Presentation\ViewModels\AndroidBaseViewModel.cs" />
+    <Compile Include="Presentation\ViewModels\MainActivityViewModel.cs" />
+    <Compile Include="Presentation\Views\ListObserver.cs" />
+    <Compile Include="Presentation\Views\MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -126,7 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Refit">
-      <Version>6.3.2</Version>
+      <Version>7.1.2</Version>
     </PackageReference>
     <PackageReference Include="System.Net.Http">
       <Version>4.3.4</Version>

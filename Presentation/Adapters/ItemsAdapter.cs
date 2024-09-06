@@ -4,10 +4,10 @@ using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using Bumptech.Glide;
 using Bumptech.Glide.Request;
-using Xamarin.Android.Mvvm.App.Models;
+using Xamarin.Android.Mvvm.App.Data.DataSource.Models;
 using View = Android.Views.View;
 
-namespace Xamarin.Android.Mvvm.App.Adapters
+namespace Xamarin.Android.Mvvm.App.Presentation.Adapters
 {
     public class UsersAdapter : RecyclerView.Adapter
     {
@@ -29,13 +29,17 @@ namespace Xamarin.Android.Mvvm.App.Adapters
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            Glide.With(holder.ItemView.Context)
-                .Load(_usersList[position].Picture.Large)
+            var userViewHolder = holder as UserViewHolder;
+            var user = _usersList[position];
+
+            Glide.With(userViewHolder.ItemView.Context)
+                .Load(user.Picture.Large)
                 .Apply(RequestOptions.CircleCropTransform())
-                .Into((holder as UserViewHolder).UserPhotoImageView);
-            (holder as UserViewHolder).UserFirstNameTextView.Text = _usersList[position].Name.First;
-            (holder as UserViewHolder).UserLastNameTextView.Text = _usersList[position].Name.Last;
-            (holder as UserViewHolder).UserAgeTextView.Text = _usersList[position].Dob.Age.ToString();
+                .Into(userViewHolder.UserPhotoImageView);
+
+            userViewHolder.UserFirstNameTextView.Text = user.Name.First;
+            userViewHolder.UserLastNameTextView.Text = user.Name.Last;
+            userViewHolder.UserAgeTextView.Text = user.Dob.Age.ToString();
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

@@ -9,13 +9,12 @@ using AndroidX.RecyclerView.Widget;
 using System.ComponentModel;
 using Debug = System.Diagnostics.Debug;
 using Google.Android.Material.ProgressIndicator;
-using static Xamarin.Android.Mvvm.App.Adapters.UsersAdapter;
-using Xamarin.Android.Mvvm.App.Adapters;
-using Xamarin.Android.Mvvm.App.ViewModels;
 using Java.Lang;
-using Xamarin.Android.Mvvm.App.Views;
+using Xamarin.Android.Mvvm.App.Presentation.Adapters;
+using static Xamarin.Android.Mvvm.App.Presentation.Adapters.UsersAdapter;
+using Xamarin.Android.Mvvm.App.Presentation.ViewModels;
 
-namespace Xamarin.Android.Mvvm.App
+namespace Xamarin.Android.Mvvm.App.Presentation.Views
 {
     [Activity(Theme = "@style/Theme.MyApplication.NoActionBar", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
     public class MainActivity : AppCompatActivity, IItemClickListener
@@ -79,12 +78,9 @@ namespace Xamarin.Android.Mvvm.App
                     {
                         ChangeProgressBarVisibility(ViewStates.Invisible);
                     }
-                    Debug.WriteLine("IsBusyChanged");
-                    break;
-                default:
-                    Debug.WriteLine("SomePropertyChanged");
                     break;
             }
+            Debug.WriteLine($"Property '{e.PropertyName}' in {sender?.GetType().Name}.");
         }
 
         private void ChangeProgressBarVisibility(ViewStates viewState)

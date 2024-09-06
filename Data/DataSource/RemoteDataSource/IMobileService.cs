@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Xamarin.Android.Mvvm.App.Models;
+using Xamarin.Android.Mvvm.App.Data.DataSource.Models;
 
-namespace Xamarin.Android.Mvvm.App.Repository.WebService
+namespace Xamarin.Android.Mvvm.App.Data.DataSource.RemoteDataSource
 {
     public interface IMobileService
     {

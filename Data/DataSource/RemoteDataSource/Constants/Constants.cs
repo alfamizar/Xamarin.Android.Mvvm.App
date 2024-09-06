@@ -1,4 +1,4 @@
-﻿namespace Xamarin.Android.Mvvm.App.Constants
+﻿namespace Xamarin.Android.Mvvm.App.Data.DataSource.RemoteDataSource.Constants
 {
     public static class Constants
     {

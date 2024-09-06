@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Xamarin.Android.Mvvm.App.Models;
-using Xamarin.Android.Mvvm.App.Repository.WebService;
+using Xamarin.Android.Mvvm.App.Data.DataSource.Models;
+using Xamarin.Android.Mvvm.App.Data.DataSource.RemoteDataSource;
 
-namespace Xamarin.Android.Mvvm.App.Repository
+namespace Xamarin.Android.Mvvm.App.Repository.WebRepository
 {
     public class WebRepository : IRepository
     {
